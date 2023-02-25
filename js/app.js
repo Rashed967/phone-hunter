@@ -15,25 +15,37 @@ const displayPhones = phones => {
     const phonesContainer = document.getElementById('phones-container');
     phonesContainer.innerHTML = '';
 
-    // display 20 phones only 
+        // show All btn 
+        const btnShowAll = document.getElementById('btn-show-all');
+        if(phones.length > 10){
+            btnShowAll.classList.remove('d-none');
+        }
+        else{
+            btnShowAll.classList.add('d-none');
+
+        }
+
+    // display 10 phones 
     phones = phones.slice(0, 10);
 
-    // display no phone 
-    const noFoundMessage = document.getElementById('no-found-message');
+    // warning message 
+    const warningMessage = document.getElementById('warning-message');
     if(phones.length === 0){
-        noFoundMessage.classList.remove('d-none');
+        warningMessage.classList.remove('d-none');
     }
     else{
-        noFoundMessage.classList.add('d-none');
+        warningMessage.classList.add('d-none');
+
     }
+
+
 
     // display All phone 
     phones.forEach(phone => {
         const phoneDiv = document.createElement('div')
         phoneDiv.classList.add('col');
         phoneDiv.innerHTML = `
-  
-        <div class="card p-4">
+         <div class="card p-4">
             <img class="card-img-top" alt="" src="${phone.image}">
             <div class="card-body">
                 <h5 class="card-title"> ${phone.phone_name} </h5>
@@ -45,13 +57,27 @@ const displayPhones = phones => {
         console.log(phone);
       phonesContainer.appendChild(phoneDiv);  
     });
+    toggleSpinner(false);
 }
 
-
 document.getElementById('btn-search').addEventListener('click', function(){
+    toggleSpinner(true);
     const searchField = document.getElementById('search-field');
     const searchFieldValue = searchField.value;
     loadPhone(searchFieldValue);
+    searchField.value = '';
 })
+
+
+const toggleSpinner = isLoading =>{
+    const loaderSection = document.getElementById('loader');
+    if(isLoading){
+        loaderSection.classList.remove('d-none');
+    }
+    else{
+        loaderSection.classList.add('d-none');
+
+    }
+}
 
 loadPhone('phone');
